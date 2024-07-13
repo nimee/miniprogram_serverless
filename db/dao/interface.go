@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"wxcloudrun-golang/db/album"
 	"wxcloudrun-golang/db/model"
 )
 
@@ -12,7 +13,21 @@ type CounterInterface interface {
 }
 
 // CounterInterfaceImp 计数器数据模型实现
-type CounterInterfaceImp struct{}
+//type CounterInterfaceImp struct{}
 
 // Imp 实现实例
-var Imp CounterInterface = &CounterInterfaceImp{}
+//var Imp CounterInterface = &CounterInterfaceImp{}
+
+type AlbumerInterface interface {
+	ClearAlbumer(theme string) error
+	UpsertAlbumer(alblum *album.Album) error
+	GetAlbumers(group string) (*[]album.Album, error)
+
+	ClearPhoto(photoId string) error
+	UpsertPhoto(photo *album.Photo) error
+	GetPhotos(theme string) (*[]album.Photo, error)
+}
+
+type AlbumerInterfaceImp struct{}
+
+var Imp AlbumerInterface = &AlbumerInterfaceImp{}

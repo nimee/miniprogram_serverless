@@ -1,5 +1,6 @@
 package service
 
+/*
 import (
 	"encoding/json"
 	"fmt"
@@ -157,3 +158,4 @@ func getIndex() (string, error) {
 	}
 	return string(b), nil
 }
+*/

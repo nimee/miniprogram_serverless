@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"wxcloudrun-golang/db/album"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,7 +22,7 @@ func Init() error {
 	addr := os.Getenv("MYSQL_ADDRESS")
 	dataBase := os.Getenv("MYSQL_DATABASE")
 	if dataBase == "" {
-		dataBase = "golang_demo"
+		dataBase = "album"
 	}
 	source = fmt.Sprintf(source, user, pwd, addr, dataBase)
 	fmt.Println("start init mysql with ", source)
@@ -35,6 +36,14 @@ func Init() error {
 		return err
 	}
 
+	err = db.AutoMigrate(&album.Album{}, &album.Photo{})
+	if err != nil {
+		fmt.Println("DB create table err, err=", err.Error())
+		return err
+	}
+
+	//db.Migrator().CreateIndex(&album.Album{}, "group")
+
 	sqlDB, err := db.DB()
 	if err != nil {
 		fmt.Println("DB Init error,err=", err.Error())
@@ -46,7 +55,7 @@ func Init() error {
 	// 设置打开数据库连接的最大数量
 	sqlDB.SetMaxOpenConns(200)
 	// 设置了连接可复用的最大时间
-	sqlDB.SetConnMaxLifetime(time.Hour)
+	sqlDB.SetConnMaxLifetime(10 * time.Minute)
 
 	dbInstance = db
 
