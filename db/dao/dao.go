@@ -52,12 +52,12 @@ func (imp *AlbumerInterfaceImp) UpsertAlbumer(alblum *album.Album) error {
 	return cli.Table(tableAlbum).Save(alblum).Error
 }
 
-// GetAlbumer 查询Albumer
-func (imp *AlbumerInterfaceImp) GetAlbumers(groupName string) (*[]album.Album, error) {
+// GetAlbumer 查询所有的Albumer
+func (imp *AlbumerInterfaceImp) GetAlbumers() (*[]album.Album, error) {
 	var err error
 	var albumersList = new([]album.Album)
 	cli := db.Get()
-	err = cli.Table(tableAlbum).Where("groupName = ?", groupName).Find(albumersList).Error
+	err = cli.Table(tableAlbum).Find(albumersList).Error
 	return albumersList, err
 }
 

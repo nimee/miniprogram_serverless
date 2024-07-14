@@ -108,7 +108,7 @@ func TestAlbumerInterfaceImp_GetAlbumers(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.imp.GetAlbumers(tt.args.group)
+			got, err := tt.imp.GetAlbumers()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("AlbumerInterfaceImp.GetAlbumers() error = %v, wantErr %v", err, tt.wantErr)
 				return

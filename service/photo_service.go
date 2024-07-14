@@ -158,20 +158,18 @@ func deletePhoto(r *http.Request) (int, error) {
 	return 200, nil
 }
 
-// getAlbum 查询某一group下的所有theme
+// getAlbum 查询所有theme
 func getAlbums(r *http.Request) (*[]album.Album, error) {
-	//group
-
-	var group string
-	values := r.URL.Query()
-	group = values.Get("groupName")
+	// var group string
+	// values := r.URL.Query()
+	// group = values.Get("groupName")
 
 	// group, err := getGroup(r)
 	// if err != nil {
 	// 	return nil, err
 	// }
 
-	albums, err := dao.Imp.GetAlbumers(group)
+	albums, err := dao.Imp.GetAlbumers()
 	if err != nil {
 		return nil, err
 	}

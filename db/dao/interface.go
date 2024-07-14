@@ -21,7 +21,7 @@ type CounterInterface interface {
 type AlbumerInterface interface {
 	ClearAlbumer(theme string) error
 	UpsertAlbumer(alblum *album.Album) error
-	GetAlbumers(group string) (*[]album.Album, error)
+	GetAlbumers() (*[]album.Album, error)
 
 	ClearPhoto(photoId string) error
 	UpsertPhoto(photo *album.Photo) error
