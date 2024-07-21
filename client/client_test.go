@@ -5,9 +5,8 @@ import (
 	"time"
 )
 
-func TestGetAlbum(t *testing.T) {
+func TestGetAlbums(t *testing.T) {
 	type args struct {
-		group string
 	}
 	tests := []struct {
 		name string
@@ -15,12 +14,12 @@ func TestGetAlbum(t *testing.T) {
 	}{
 		{
 			name: "Get request",
-			args: args{group: "nature"},
+			args: args{},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			GetAlbum(tt.args.group)
+			GetAlbums()
 		})
 	}
 }
@@ -37,14 +36,14 @@ func TestUpsertAlbum(t *testing.T) {
 			name: "upsert album",
 			args: args{
 				album: &Album{
-					Theme:         "lotus",
+					Theme:         "王者荣耀",
 					Count:         10,
 					Photographer:  "Liang",
 					Mua:           "Wu",
 					T:             time.Now(),
 					Location:      "HangZhou",
-					GroupName:     "nature",
-					CoverId:       "0",
+					GroupName:     "王者荣耀",
+					CoverId:       "10",
 					StorageType:   "cos",
 					StorageParams: []byte{},
 					Enable:        true,
@@ -61,7 +60,7 @@ func TestUpsertAlbum(t *testing.T) {
 
 func TestDeleteAlbum(t *testing.T) {
 	type args struct {
-		theme string
+		id uint
 	}
 	tests := []struct {
 		name string
@@ -70,35 +69,35 @@ func TestDeleteAlbum(t *testing.T) {
 		{
 			name: "delete album",
 			args: args{
-				theme: "two",
+				id: 12,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			DeleteAlbum(tt.args.theme)
+			DeleteAlbum(tt.args.id)
 		})
 	}
 }
 
 func TestGetPhoto(t *testing.T) {
 	type args struct {
-		theme string
+		id uint
 	}
 	tests := []struct {
 		name string
 		args args
 	}{
 		{
-			name: "query photos on a theme",
+			name: "query photos on a themeid",
 			args: args{
-				theme: "lotus",
+				id: 0,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			GetPhoto(tt.args.theme)
+			GetPhoto(tt.args.id)
 		})
 	}
 }
@@ -115,8 +114,8 @@ func TestUpsertPhoto(t *testing.T) {
 			name: "insert photo",
 			args: args{
 				photo: &Photo{
-					Theme:   "bamboo",
-					PhotoId: "1",
+					AlbumId: 12,
+					PhotoId: "ccc",
 				},
 			},
 		},

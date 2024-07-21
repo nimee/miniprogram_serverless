@@ -32,14 +32,14 @@ func TestAlbumerInterfaceImp_UpsertAlbumer(t *testing.T) {
 			imp:  Imp,
 			args: args{
 				alblum: &album.Album{
-					//ID:            0,
-					Theme:         "one",
+					ID:            1,
+					Theme:         "云栖竹径",
 					Count:         10,
 					Photographer:  "Liang",
 					Mua:           "Wu",
 					T:             time.Now(),
 					Location:      "HangZhou",
-					GroupName:     "luan",
+					GroupName:     "云栖竹径",
 					CoverId:       "0",
 					StorageType:   "cos",
 					StorageParams: []byte{},
@@ -60,7 +60,7 @@ func TestAlbumerInterfaceImp_UpsertAlbumer(t *testing.T) {
 func TestAlbumerInterfaceImp_ClearAlbumer(t *testing.T) {
 
 	type args struct {
-		theme string
+		id uint
 	}
 	tests := []struct {
 		name    string
@@ -72,14 +72,14 @@ func TestAlbumerInterfaceImp_ClearAlbumer(t *testing.T) {
 			name: "delete test",
 			imp:  Imp,
 			args: args{
-				theme: "four",
+				id: 1,
 			},
 			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.imp.ClearAlbumer(tt.args.theme); (err != nil) != tt.wantErr {
+			if err := tt.imp.ClearAlbumer(tt.args.id); (err != nil) != tt.wantErr {
 				t.Errorf("AlbumerInterfaceImp.ClearAlbumer() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -88,7 +88,6 @@ func TestAlbumerInterfaceImp_ClearAlbumer(t *testing.T) {
 
 func TestAlbumerInterfaceImp_GetAlbumers(t *testing.T) {
 	type args struct {
-		group string
 	}
 	tests := []struct {
 		name    string
@@ -98,11 +97,9 @@ func TestAlbumerInterfaceImp_GetAlbumers(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "query test",
-			imp:  Imp,
-			args: args{
-				group: "qing",
-			},
+			name:    "query test",
+			imp:     Imp,
+			args:    args{},
 			wantErr: false,
 		},
 	}
@@ -135,8 +132,8 @@ func TestAlbumerInterfaceImp_UpsertPhoto(t *testing.T) {
 			imp:  Imp,
 			args: args{
 				photo: &album.Photo{
-					Theme:   "one",
-					PhotoId: "a",
+					AlbumId: 1,
+					PhotoId: "b",
 				},
 			},
 			wantErr: false,
@@ -165,7 +162,7 @@ func TestAlbumerInterfaceImp_ClearPhoto(t *testing.T) {
 			name: "delete photo",
 			imp:  Imp,
 			args: args{
-				photoId: "a",
+				photoId: "c",
 			},
 			wantErr: false,
 		},
@@ -181,7 +178,7 @@ func TestAlbumerInterfaceImp_ClearPhoto(t *testing.T) {
 
 func TestAlbumerInterfaceImp_GetPhotos(t *testing.T) {
 	type args struct {
-		theme string
+		id uint
 	}
 	tests := []struct {
 		name    string
@@ -194,13 +191,13 @@ func TestAlbumerInterfaceImp_GetPhotos(t *testing.T) {
 			name: "query photos",
 			imp:  Imp,
 			args: args{
-				theme: "lotus",
+				id: 1,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.imp.GetPhotos(tt.args.theme)
+			got, err := tt.imp.GetPhotos(tt.args.id)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("AlbumerInterfaceImp.GetPhotos() error = %v, wantErr %v", err, tt.wantErr)
 				return

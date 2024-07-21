@@ -19,13 +19,13 @@ type CounterInterface interface {
 //var Imp CounterInterface = &CounterInterfaceImp{}
 
 type AlbumerInterface interface {
-	ClearAlbumer(theme string) error
+	ClearAlbumer(id uint) error
 	UpsertAlbumer(alblum *album.Album) error
 	GetAlbumers() (*[]album.Album, error)
 
 	ClearPhoto(photoId string) error
 	UpsertPhoto(photo *album.Photo) error
-	GetPhotos(theme string) (*[]album.Photo, error)
+	GetPhotos(id uint) (*[]album.Photo, error)
 }
 
 type AlbumerInterfaceImp struct{}

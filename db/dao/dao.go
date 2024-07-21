@@ -38,12 +38,12 @@ func (imp *CounterInterfaceImp) GetCounter(id int32) (*model.CounterModel, error
 */
 
 // ClearAlbumer 清除Albumer
-func (imp *AlbumerInterfaceImp) ClearAlbumer(theme string) error {
+func (imp *AlbumerInterfaceImp) ClearAlbumer(id uint) error {
 	cli := db.Get()
-	if err := cli.Table(tablePhoto).Where("theme = ?", theme).Delete(&album.Photo{}).Error; err != nil {
+	if err := cli.Table(tablePhoto).Where("albumId = ?", id).Delete(&album.Photo{}).Error; err != nil {
 		fmt.Println(err)
 	}
-	return cli.Table(tableAlbum).Where("theme = ?", theme).Delete(&album.Album{}).Error //Theme: theme
+	return cli.Table(tableAlbum).Where("id = ?", id).Delete(&album.Album{}).Error //Theme: theme
 }
 
 // UpsertAlbumer 更新/写入Albumer
@@ -74,10 +74,10 @@ func (imp *AlbumerInterfaceImp) UpsertPhoto(photo *album.Photo) error {
 }
 
 // GetPhoto 查询Albumer中的photo
-func (imp *AlbumerInterfaceImp) GetPhotos(theme string) (*[]album.Photo, error) {
+func (imp *AlbumerInterfaceImp) GetPhotos(id uint) (*[]album.Photo, error) {
 	var err error
 	var photoList = new([]album.Photo)
 	cli := db.Get()
-	err = cli.Table(tablePhoto).Where("theme = ?", theme).Find(photoList).Error
+	err = cli.Table(tablePhoto).Where("albumId = ?", id).Find(photoList).Error
 	return photoList, err
 }

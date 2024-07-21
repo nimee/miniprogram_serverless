@@ -15,7 +15,7 @@ type Body struct {
 }
 
 type Album struct {
-	//ID            uint      `gorm:"column:id;AUTO_INCREMENT;comment:主键" json:"id"`
+	ID            uint      `json:"id"`
 	Theme         string    `gorm:"index;primaryKey;column:theme;type:varchar(255)" json:"theme"`
 	Count         int16     `gorm:"column:count;type:int(11)" json:"count"`
 	Photographer  string    `gorm:"column:photographer;type:varchar(255)" json:"photographer"`
@@ -31,13 +31,13 @@ type Album struct {
 }
 
 type Photo struct {
-	Theme   string `gorm:"column:theme;type:varchar(255)" json:"theme"`
-	PhotoId string `gorm:"primaryKey;index;column:photoId;type:varchar(255)" json:"photoId"`
-	Enable  bool   `gorm:"column:enable;type:TINYINT(1);default:1" json:"enable"`
+	AlbumId uint   `json:"albumId"`
+	PhotoId string `json:"photoId"`
+	Enable  bool   `json:"enable"`
 }
 
-func GetAlbum(group string) {
-	url := fmt.Sprintf("http://127.0.0.1:80/api/album?action=query&groupName=%s", group)
+func GetAlbums() {
+	url := "http://127.0.0.1:80/api/album?action=query"
 	resp, err := http.Get(url)
 
 	if err != nil {
@@ -65,8 +65,8 @@ func GetAlbum(group string) {
 	fmt.Println(albums)
 }
 
-func GetPhoto(theme string) {
-	url := fmt.Sprintf("http://127.0.0.1:80/api/photo?action=query&theme=%s", theme)
+func GetPhoto(id uint) {
+	url := fmt.Sprintf("http://127.0.0.1:80/api/photo?action=query&albumId=%d", id)
 	resp, err := http.Get(url)
 
 	if err != nil {
@@ -83,7 +83,7 @@ func GetPhoto(theme string) {
 	resp.Body.Close()
 
 	// print response body
-	//fmt.Println(string(body))
+	fmt.Println(string(body))
 	var b Body
 	err = json.Unmarshal(body, &b)
 	if err != nil {
@@ -115,7 +115,7 @@ func UpsertAlbum(album *Album) {
 }
 
 func UpsertPhoto(photo *Photo) {
-	url := "http://127.0.0.1:27081/api/photo?action=update"
+	url := "http://127.0.0.1:80/api/photo?action=update"
 	p, _ := json.Marshal(photo)
 
 	requst, err := http.NewRequest("POST", url, bytes.NewBuffer(p))
@@ -133,8 +133,8 @@ func UpsertPhoto(photo *Photo) {
 	fmt.Println(res)
 }
 
-func DeleteAlbum(theme string) {
-	url := fmt.Sprintf("http://127.0.0.1:80/api/album?action=delete&theme=%s", theme)
+func DeleteAlbum(id uint) {
+	url := fmt.Sprintf("http://127.0.0.1:80/api/album?action=delete&albumId=%d", id)
 	resp, err := http.Get(url)
 
 	if err != nil {

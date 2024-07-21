@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	"wxcloudrun-golang/db/album"
 	"wxcloudrun-golang/db/dao"
@@ -139,8 +140,11 @@ func upsertPhoto(r *http.Request) (int, error) {
 }
 
 func deleteAlbum(r *http.Request) (int, error) {
-	theme := getTheme(r)
-	err := dao.Imp.ClearAlbumer(theme)
+	id, err := getAlbumId(r)
+	if err != nil {
+		return 500, err
+	}
+	err = dao.Imp.ClearAlbumer(id)
 	if err != nil {
 		return 500, err
 	}
@@ -179,11 +183,12 @@ func getAlbums(r *http.Request) (*[]album.Album, error) {
 
 // getPhotos 查询某一theme下的所有photo
 func getPhotos(r *http.Request) (*[]album.Photo, error) {
-	var theme string
-	values := r.URL.Query()
-	theme = values.Get("theme")
+	id, err := getAlbumId(r)
+	if err != nil {
+		return nil, err
+	}
 
-	photos, err := dao.Imp.GetPhotos(theme)
+	photos, err := dao.Imp.GetPhotos(id)
 	if err != nil {
 		return nil, err
 	}
@@ -213,12 +218,20 @@ func getAction(r *http.Request) string {
 	return action
 }
 
-// 获取url中的theme
-func getTheme(r *http.Request) string {
-	var theme string
+// 获取url中的id
+func getId(r *http.Request) (uint, error) {
 	values := r.URL.Query()
-	theme = values.Get("theme")
-	return theme
+	value := values.Get("id")
+	id, err := strconv.Atoi(value)
+	return uint(id), err
+}
+
+// 获取url中的albumId参数
+func getAlbumId(r *http.Request) (uint, error) {
+	values := r.URL.Query()
+	value := values.Get("albumId")
+	id, err := strconv.Atoi(value)
+	return uint(id), err
 }
 
 // 获取url中的photoId
