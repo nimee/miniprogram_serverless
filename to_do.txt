@@ -1,0 +1,15 @@
+http://127.0.0.1/api/photo?action=query&theme=one
+
+
+js的异步调用
+
+小程序页面返回的问题
+
+onload 与 onshow的差别
+photo 页面设置缓存
+
+js 的 that 与 this 
+js 异步函数执行变量的引用
+函数内部调用异步函数，参数的作用域
+
+下拉刷新完成
